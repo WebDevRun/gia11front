@@ -32,7 +32,18 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-  width: 1320px;
+  max-width: 1320px;
   margin: 0 auto;
+}
+
+@media (width: 1200px) {
+  .detailsWrapper {
+    max-width: 1140px;
+  }
+}
+@media (width: 992px) {
+  .detailsWrapper {
+    max-width: 960px;
+  }
 }
 </style>

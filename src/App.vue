@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="main-nav">
-      <router-link :to="{ name: 'UploadFiles' }">Загрузка файлов</router-link>
+      <!-- <router-link :to="{ name: 'UploadFiles' }">Загрузка файлов</router-link> -->
       <router-link :to="{ name: 'Infomation' }">Информация ГИА 11</router-link>
       <router-link :to="{ name: 'About' }">О проекте</router-link>
     </div>

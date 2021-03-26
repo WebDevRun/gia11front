@@ -160,7 +160,7 @@ export default {
   &__head th,
   &__content td {
     border: 1px solid #ccc;
-    padding: 15px 3px;
+    padding: 15px 2px;
   }
   &__content td {
     text-align: center;
@@ -169,39 +169,63 @@ export default {
 
 .none {
   cursor: pointer;
-  &::after {
-    margin-left: 3px;
+  position: relative;
+  &::before {
     content: '';
-    display: inline-block;
-    vertical-align: middle;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 7px solid #000;
-    border-top: 7px solid #000;
+    position: absolute;
+    right: 2px;
+    top: 12px;
+    border: 4px solid transparent;
+    border-bottom: 7px solid #ccc;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    right: 2px;
+    bottom: 12px;
+    border: 4px solid transparent;
+    border-top: 7px solid #ccc;
   }
 }
+
 .descendingOrder {
   cursor: pointer;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    right: 2px;
+    top: 12px;
+    border: 4px solid transparent;
+    border-bottom: 7px solid #000;
+  }
   &::after {
     content: '';
-    margin-left: 3px;
-    display: inline-block;
-    vertical-align: middle;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 7px solid #000;
+    position: absolute;
+    right: 2px;
+    bottom: 12px;
+    border: 4px solid transparent;
+    border-top: 7px solid #ccc;
   }
 }
 
 .ascendingOrder {
   cursor: pointer;
-  &::after {
-    margin-left: 3px;
+  position: relative;
+  &::before {
     content: '';
-    display: inline-block;
-    vertical-align: middle;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
+    position: absolute;
+    right: 2px;
+    top: 12px;
+    border: 4px solid transparent;
+    border-bottom: 7px solid #ccc;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    right: 2px;
+    bottom: 12px;
+    border: 4px solid transparent;
     border-top: 7px solid #000;
   }
 }

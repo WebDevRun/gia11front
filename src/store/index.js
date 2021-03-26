@@ -20,7 +20,8 @@ export default createStore({
   actions: {
     async sendExams ({ dispatch, commit }, data) {
       try {
-        const response = await fetch('http://192.168.43.161:5000/api/exams', {
+        // const response = await fetch('http://192.168.43.161:5000/api/exams', {
+        const response = await fetch('http://192.168.1.22:5000/api/exams', {
           method: 'POST',
           body: data
         })
@@ -33,7 +34,8 @@ export default createStore({
     },
     async getAllExams ({ dispatch, commit }) {
       try {
-        const response = await fetch('http://192.168.43.161:5000/api/exams')
+        // const response = await fetch('http://192.168.43.161:5000/api/exams')
+        const response = await fetch('http://192.168.1.22:5000/api/exams')
         if (response.ok) {
           commit('pushAllExams', await response.json())
         }
