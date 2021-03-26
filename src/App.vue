@@ -1,30 +1,43 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div>
+    <div class="main-nav">
+      <router-link :to="{ name: 'UploadFiles' }">Загрузка файлов</router-link>
+      <router-link :to="{ name: 'Infomation' }">Информация ГИА 11</router-link>
+      <router-link :to="{ name: 'About' }">О проекте</router-link>
+    </div>
+    <router-view />
   </div>
-  <router-view/>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+.main-nav {
+  height: 50px;
+  background-color: #15816b;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.2em;
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+  & a {
+  color: #eee;
+    text-decoration: none;
   }
+
+}
+
+.h1 {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+table {
+  border-collapse: collapse;
 }
 </style>
