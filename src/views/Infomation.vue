@@ -9,7 +9,7 @@
       </div>
     </div>
     <div v-for='(exam, index) in exams' :key='index'>
-      <InfoSubject :exam="exam" :openAllInfo="checked"/>
+      <InfoSubject :exam="exam" :openAllTables="checked"/>
     </div>
   </div>
 </template>

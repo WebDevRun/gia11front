@@ -1,12 +1,12 @@
 <template>
-  <details class="detailsWrapper" :open="isOpenInfo">
-    <summary class="detailsWrapper__h2 h2">
+  <details class="detailsWrapper" :open="openAllTables">
+    <summary class="detailsWrapper__h2 h2" @click="openTable = !openTable">
       <div class="h2__info">
         <div>{{ exam.examCode }}</div>
         <div>{{ exam.examName }}</div>
         <div>{{ exam.examDate }}</div>
       </div>
-      <div class="h2__statistic statistic" :class="{open: isOpenInfo}">
+      <div class="h2__statistic statistic" :class="{open: openAllTables || openTable}">
         <div class="statistic__numberOfParticipants">{{ countParticipants }}</div>
         <div class="statistic__maxScore">{{ maxScore }}</div>
         <div class="statistic__averageScore">{{ averageScore }}</div>
@@ -17,17 +17,17 @@
       <table class="detailsWrapper__table table">
         <tr class="table__head">
           <th>МСУ</th>
-          <th @click="sortHandler(exam.participants, 'schoolCode')" class="arrows" :class="sortData.schoolCode">Код школы</th>
+          <th class="arrows" :class="sortData.schoolCode" @click="sortHandler(exam.participants, 'schoolCode')">Код школы</th>
           <th>Класс</th>
           <th>Код ППЭ</th>
           <th>Номер аудитории</th>
-          <th @click="sortHandler(exam.participants, 'subname')" class="arrows" :class="sortData.subname">Фамилия</th>
-          <th @click="sortHandler(exam.participants, 'name')" class="arrows" :class="sortData.name">Имя</th>
-          <th @click="sortHandler(exam.participants, 'lastname')" class="arrows" :class="sortData.lastname">Отчетсво</th>
+          <th class="arrows" :class="sortData.subname" @click="sortHandler(exam.participants, 'subname')">Фамилия</th>
+          <th class="arrows" :class="sortData.name" @click="sortHandler(exam.participants, 'name')">Имя</th>
+          <th class="arrows" :class="sortData.lastname" @click="sortHandler(exam.participants, 'lastname')">Отчетсво</th>
           <th>Задания с кратким ответом</th>
           <th>Задания с развёрнутым ответом</th>
           <th>Первичный балл</th>
-          <th @click="sortHandler(exam.participants, 'score')" class="arrows" :class="sortData.score">Балл</th>
+          <th class="arrows" :class="sortData.score" @click="sortHandler(exam.participants, 'score')">Балл</th>
         </tr>
         <tr v-for='(participant, index) in exam.participants' :key='index' class="table__content">
           <td>{{ participant.MSY }}</td>
@@ -51,7 +51,7 @@
 <script>
 export default {
   name: 'InfoSubject',
-  props: ['exam', 'openAllInfo'],
+  props: ['exam', 'openAllTables'],
   data () {
     return {
       sortData: {
@@ -60,7 +60,8 @@ export default {
         name: 'none',
         lastname: 'none',
         score: 'none'
-      }
+      },
+      openTable: false
     }
   },
   computed: {
@@ -91,13 +92,6 @@ export default {
         sum += item.score
       })
       return (sum / this.countParticipants).toFixed(0)
-    },
-    isOpenInfo () {
-      if (this.openAllInfo) {
-        return true
-      } else {
-        return false
-      }
     }
   },
   methods: {
