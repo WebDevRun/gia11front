@@ -1,12 +1,12 @@
 <template>
-  <details class="detailsWrapper">
+  <details class="detailsWrapper" :open="isOpenInfo">
     <summary class="detailsWrapper__h2 h2">
       <div class="h2__info">
         <div>{{ exam.examCode }}</div>
         <div>{{ exam.examName }}</div>
         <div>{{ exam.examDate }}</div>
       </div>
-      <div class="h2__statistic statistic">
+      <div class="h2__statistic statistic" :class="{open: isOpenInfo}">
         <div class="statistic__numberOfParticipants">{{ countParticipants }}</div>
         <div class="statistic__maxScore">{{ maxScore }}</div>
         <div class="statistic__averageScore">{{ averageScore }}</div>
@@ -51,7 +51,7 @@
 <script>
 export default {
   name: 'InfoSubject',
-  props: ['exam'],
+  props: ['exam', 'openAllInfo'],
   data () {
     return {
       sortData: {
@@ -91,6 +91,13 @@ export default {
         sum += item.score
       })
       return (sum / this.countParticipants).toFixed(0)
+    },
+    isOpenInfo () {
+      if (this.openAllInfo) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -202,6 +209,20 @@ export default {
   display: flex;
   width: 250px;
   justify-content: space-between;
+  &:after {
+    content: '';
+    display: inline-block;
+    border: solid #000;
+    border-width: 0 3px 3px 0;
+    margin: 0 5px;
+    padding: 5px;
+    height: 3px;
+    width: 3px;
+    transform: rotate(-135deg);
+  }
+  &.open:after {
+    transform: rotate(45deg);
+  }
   &__numberOfParticipants:before,
   &__maxScore:before,
   &__averageScore:before,

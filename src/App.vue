@@ -26,7 +26,7 @@ body {
   font-size: 1.2em;
   box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
   & a {
-  color: #eee;
+  color: #fff;
     text-decoration: none;
   }
 
