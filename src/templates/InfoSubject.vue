@@ -1,12 +1,12 @@
 <template>
-  <details class="detailsWrapper" :open="openAllTables">
-    <summary class="detailsWrapper__h2 h2" @click="openTable = !openTable">
+  <details class="detailsWrapper" ref="details" :open="openAllTables">
+    <summary class="detailsWrapper__h2 h2" @click="openTableHandler">
       <div class="h2__info">
         <div>{{ exam.examCode }}</div>
         <div>{{ exam.examName }}</div>
         <div>{{ exam.examDate }}</div>
       </div>
-      <div class="h2__statistic statistic" :class="{open: openAllTables || openTable}">
+      <div class="h2__statistic statistic" :class="{open: openTable}">
         <div class="statistic__numberOfParticipants">{{ countParticipants }}</div>
         <div class="statistic__maxScore">{{ maxScore }}</div>
         <div class="statistic__averageScore">{{ averageScore }}</div>
@@ -130,6 +130,20 @@ export default {
           this.sortData[key] = 'none'
         }
       }
+    },
+    openTableHandler () {
+      console.log('this.openAllTables', this.openAllTables)
+      console.log('this.$refs.details.open', this.$refs.details.open)
+      if (!this.$refs.details.open) {
+        this.openTable = true
+      } else {
+        this.openTable = false
+      }
+    }
+  },
+  watch: {
+    openAllTables () {
+      this.openTable = !this.openTable
     }
   }
 }
@@ -212,10 +226,10 @@ export default {
     padding: 5px;
     height: 3px;
     width: 3px;
-    transform: rotate(-135deg);
+    transform: rotate(45deg);
   }
   &.open:after {
-    transform: rotate(45deg);
+    transform: rotate(-135deg);
   }
   &__numberOfParticipants:before,
   &__maxScore:before,
