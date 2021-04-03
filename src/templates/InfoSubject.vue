@@ -132,8 +132,6 @@ export default {
       }
     },
     openTableHandler () {
-      console.log('this.openAllTables', this.openAllTables)
-      console.log('this.$refs.details.open', this.$refs.details.open)
       if (!this.$refs.details.open) {
         this.openTable = true
       } else {
@@ -143,7 +141,11 @@ export default {
   },
   watch: {
     openAllTables () {
-      this.openTable = !this.openTable
+      if (this.openAllTables) {
+        this.openTable = true
+      } else {
+        this.openTable = false
+      }
     }
   }
 }

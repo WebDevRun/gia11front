@@ -10,9 +10,12 @@
           class="wrapperUpload__input-file"
           @change="uploadFilesHandler"
           multiple
+        />
+        <label
+          for="input-file"
+          class="wrapperUpload__file-wrapper file-wrapper"
         >
-        <label for="input-file" class="wrapperUpload__file-wrapper file-wrapper">
-          <div class="file-wrapper__status">{{message}}</div>
+          <div class="file-wrapper__status">{{ message }}</div>
           <div class="file-wrapper__button">Выбрать</div>
         </label>
       </div>
@@ -79,7 +82,7 @@ export default {
   &__input-file {
     display: none;
   }
-  &__file-wrapper{
+  &__file-wrapper {
     width: 100%;
   }
 }

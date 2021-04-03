@@ -5,7 +5,7 @@
       <router-link :to="{ name: 'Infomation' }">Информация ГИА 11</router-link>
       <router-link :to="{ name: 'About' }">О проекте</router-link>
     </div>
-    <router-view class="wrapper"/>
+    <router-view class="wrapper" />
   </div>
 </template>
 
@@ -24,12 +24,11 @@ body {
   justify-content: space-around;
   align-items: center;
   font-size: 1.2em;
-  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   & a {
-  color: #fff;
+    color: #fff;
     text-decoration: none;
   }
-
 }
 
 .h1 {
