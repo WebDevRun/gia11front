@@ -10,8 +10,8 @@
         </div>
         <div class="attributes__text">
           <span>Найти: </span>
-          <input type="text" name="subname" id="subname" placeholder="Фамилия" @input="searchAttributes.searchSubname = $event.target.value">
-          <input type="text" name="name" id="name" placeholder="Имя" @input="searchAttributes.searchName = $event.target.value">
+          <input type="text" name="subname" id="subname" placeholder="Фамилия" v-model="searchParams.searchSubname">
+          <input type="text" name="name" id="name" placeholder="Имя" v-model="searchParams.searchName">
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       checked: false,
-      searchAttributes: {
+      searchParams: {
         searchSubname: '',
         searchName: ''
       }
@@ -52,7 +52,7 @@ export default {
       this.exams.forEach(item => {
         const exam = {}
         const newParticipants = item.participants.filter(item => {
-          return item.subname.toLowerCase().includes(this.searchAttributes.searchSubname.toLowerCase()) && item.name.toLowerCase().includes(this.searchAttributes.searchName.toLowerCase())
+          return item.subname.toLowerCase().includes(this.searchParams.searchSubname.toLowerCase()) && item.name.toLowerCase().includes(this.searchParams.searchName.toLowerCase())
         })
         if (newParticipants.length !== 0) {
           exam.examCode = item.examCode
@@ -71,7 +71,25 @@ export default {
     ...mapActions(['getAllExams'])
   },
   async created () {
+    const windowData = Object.fromEntries(new URL(window.location).searchParams.entries())
+
+    if (windowData.subname) {
+      this.searchParams.searchSubname = windowData.subname
+    }
+
+    if (windowData.name) {
+      this.searchParams.searchName = windowData.name
+    }
+
     await this.getAllExams()
+  },
+  watch: {
+    'searchParams.searchSubname' () {
+      history.pushState(null, document.title, `${window.location.pathname}?subname=${this.searchParams.searchSubname}&name=${this.searchParams.searchName}`)
+    },
+    'searchParams.searchName' () {
+      history.pushState(null, document.title, `${window.location.pathname}?subname=${this.searchParams.searchSubname}&name=${this.searchParams.searchName}`)
+    }
   },
   components: {
     InfoSubject
