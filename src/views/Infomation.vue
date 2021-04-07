@@ -78,36 +78,32 @@ export default {
     ...mapActions(['getAllExams', 'getAllYears'])
   },
   async created () {
-    const windowData = Object.fromEntries(new URL(window.location).searchParams.entries())
-
-    if (windowData.year) {
-      this.selectYear = windowData.year
+    if (this.$route.query.year) {
+      this.selectYear = this.$route.query.year
     }
 
-    if (windowData.subname) {
-      this.searchParams.searchSubname = windowData.subname
+    if (this.$route.query.subname) {
+      this.searchParams.searchSubname = this.$route.query.subname
     }
 
-    if (windowData.name) {
-      this.searchParams.searchName = windowData.name
+    if (this.$route.query.name) {
+      this.searchParams.searchName = this.$route.query.name
     }
 
-    history.pushState(null, document.title, `${window.location.pathname}?year=${this.selectYear}&subname=${this.searchParams.searchSubname}&name=${this.searchParams.searchName}`)
-    // vue-router.esm-bundler.js?6c02:71 [Vue Router warn]: history.state seems to have been manually replaced without preserving the necessary values. Make sure to preserve existing history state if you are manually calling history.replaceState:
-    // history.replaceState(history.state, '', url)
+    this.$router.push({ query: { year: this.selectYear } })
 
     await this.getAllYears()
     await this.getAllExams()
   },
   watch: {
     'searchParams.searchSubname' () {
-      history.pushState(null, document.title, `${window.location.pathname}?year=${this.selectYear}&subname=${this.searchParams.searchSubname}&name=${this.searchParams.searchName}`)
+      this.$router.push({ query: { year: this.selectYear, subname: this.searchParams.searchSubname, name: this.searchParams.searchName } })
     },
     'searchParams.searchName' () {
-      history.pushState(null, document.title, `${window.location.pathname}?year=${this.selectYear}&subname=${this.searchParams.searchSubname}&name=${this.searchParams.searchName}`)
+      this.$router.push({ query: { year: this.selectYear, subname: this.searchParams.searchSubname, name: this.searchParams.searchName } })
     },
     async selectYear () {
-      history.pushState(null, document.title, `${window.location.pathname}?year=${this.selectYear}&subname=${this.searchParams.searchSubname}&name=${this.searchParams.searchName}`)
+      this.$router.push({ query: { year: this.selectYear } })
       await this.getAllExams()
     }
   },
