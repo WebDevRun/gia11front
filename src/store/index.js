@@ -25,8 +25,8 @@ export default createStore({
   actions: {
     async getAllYears ({ dispatch, commit }) {
       try {
-        const response = await fetch('http://192.168.43.161:5000/api/years')
-        // const response = await fetch('http://192.168.1.22:5000/api/years')
+        const response = await fetch('http://192.168.1.22:5000/api/years')
+        // const response = await fetch('http://192.168.43.161:5000/api/years')
         if (response.ok) {
           commit('pushAllYears', await response.json())
         }
@@ -36,8 +36,8 @@ export default createStore({
     },
     async sendExams ({ dispatch, commit }, data) {
       try {
-        const response = await fetch('http://192.168.43.161:5000/api/exams', {
-        // const response = await fetch('http://192.168.1.22:5000/api/exams', {
+        const response = await fetch('http://192.168.1.22:5000/api/exams', {
+        // const response = await fetch('http://192.168.43.161:5000/api/exams', {
           method: 'POST',
           body: data
         })
@@ -48,11 +48,10 @@ export default createStore({
         console.log(error)
       }
     },
-    async getAllExams ({ dispatch, commit }) {
+    async getAllExams ({ dispatch, commit }, params) {
       try {
-        const windowData = window.location.search
-        const response = await fetch(`http://192.168.43.161:5000/api/exams${windowData}`)
-        // const response = await fetch(`http://192.168.1.22:5000/api/exams${windowData}`)
+        const response = await fetch(`http://192.168.1.22:5000/api/exams?year=${params}`)
+        // const response = await fetch(`http://192.168.43.161:5000/api/exams${windowData}`)
         if (response.ok) {
           commit('pushAllExams', await response.json())
         }

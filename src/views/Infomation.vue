@@ -93,7 +93,7 @@ export default {
     this.$router.push({ query: { year: this.selectYear } })
 
     await this.getAllYears()
-    await this.getAllExams()
+    await this.getAllExams(this.selectYear)
   },
   watch: {
     'searchParams.searchSubname' () {
@@ -104,7 +104,7 @@ export default {
     },
     async selectYear () {
       this.$router.push({ query: { year: this.selectYear } })
-      await this.getAllExams()
+      await this.getAllExams(this.selectYear)
     }
   },
   components: {
