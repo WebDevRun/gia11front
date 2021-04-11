@@ -1,11 +1,7 @@
 <template>
   <details class="detailsWrapper" ref="details" :open="openAllTables">
     <summary class="detailsWrapper__h2 h2" @click="openTableHandler">
-      <div class="h2__info">
-        <div>{{ exam.examCode }}</div>
-        <div>{{ exam.examName }}</div>
-        <div>{{ exam.examDate }}</div>
-      </div>
+      <div class="h2__info">{{ exam.examCode }} - {{ exam.examName }}</div>
       <div class="h2__statistic statistic" :class="{open: openTable}">
         <div class="statistic__numberOfParticipants">{{ countParticipants }}</div>
         <div class="statistic__maxScore">{{ maxScore }}</div>
@@ -16,6 +12,7 @@
     <div class="detailsWrapper__scroll">
       <table class="detailsWrapper__table table">
         <tr class="table__head">
+          <th class="arrows" :class="sortData.examDate" @click="sortHandler(exam.participants, 'examDate')">Дата</th>
           <th>МСУ</th>
           <th class="arrows" :class="sortData.schoolCode" @click="sortHandler(exam.participants, 'schoolCode')">Код школы</th>
           <th>Класс</th>
@@ -30,6 +27,7 @@
           <th class="arrows" :class="sortData.score" @click="sortHandler(exam.participants, 'score')">Балл</th>
         </tr>
         <tr v-for='(participant, index) in exam.participants' :key='index' class="table__content">
+          <td>{{ formatDate(participant.examDate) }}</td>
           <td>{{ participant.MSY }}</td>
           <td>{{ participant.schoolCode }}</td>
           <td>{{ participant.class }}</td>
@@ -38,8 +36,8 @@
           <td>{{ participant.subname }}</td>
           <td>{{ participant.name }}</td>
           <td>{{ participant.lastname }}</td>
-          <td>{{ participant.shortTask }}</td>
-          <td>{{ participant.detailedTask }}</td>
+          <td>{{ participant.shortTask.join(',') }}</td>
+          <td>{{ participant.detailedTask.join(',') }}</td>
           <td>{{ participant.baseScore }}</td>
           <td>{{ participant.score }}</td>
         </tr>
@@ -55,6 +53,7 @@ export default {
   data () {
     return {
       sortData: {
+        examDate: 'none',
         schoolCode: 'none',
         subname: 'none',
         name: 'none',
@@ -137,6 +136,19 @@ export default {
       } else {
         this.openTable = false
       }
+    },
+    formatDate (date) {
+      const newDate = new Date(date)
+      let dd = newDate.getDate()
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+      let mm = newDate.getMonth() + 1
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      const yy = newDate.getFullYear()
+      return `${dd}.${mm}.${yy}`
     }
   },
   watch: {
@@ -167,12 +179,6 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 15px;
-  &__info {
-    margin-right: 20px;
-    width: 350px;
-    display: flex;
-    justify-content: space-between;
-  }
 }
 
 .table {
@@ -294,7 +300,6 @@ export default {
 
 @media (max-width: 710px) {
   .table {
-    font-size: 0.45em;
     &__head th,
     &__content td {
       padding: 5px 2px;
@@ -339,15 +344,13 @@ export default {
 @media (max-width: 576px) {
   .h2 {
     &__info {
-      margin-right: 10px;
-      font-size: .7em;
-      width: 60%;
+      margin-right: 20px;
+      width: calc(40% - 20px);
     }
   }
 
   .statistic {
-    width: 38%;
-    font-size: .7em;
+    width: 50%;
     &__numberOfParticipants:before,
     &__maxScore:before,
     &__averageScore:before,

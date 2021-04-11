@@ -118,16 +118,8 @@ export default {
   background-color: #fff;
   box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
   border-radius: .25rem;
-  font-size: 1.3em;
-  padding: 10px;
-  &__name {
-    margin: 0;
-    text-align: center;
-    font-weight: 700;
-  }
-  &__checkbox {
-    margin: 10px 0;
-  }
+  font-size: 1.2em;
+  padding: 5px;
 }
 
 .attributes {
@@ -135,18 +127,30 @@ export default {
   justify-content: space-evenly;
   margin: 10px;
   &__checkbox {
-    border-radius: 0.25rem;
-    & input[type=checkbox] {
-      height: 15px;
-      width: 15px;
+    & input {
       margin-right: 5px;
+      border: 1px solid #15816b;
     }
   }
   &__text {
     padding: 2px;
     & input[type=text] {
-    margin-right: 2px;
+    margin-right: 3px;
+    padding: 3px;
+    border: 1px solid #15816b;
     }
+  }
+  &__year {
+    & select {
+    padding: 3px;
+    border: 1px solid #15816b;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .tools {
+    font-size: 1em;
   }
 }
 </style>
