@@ -9,6 +9,12 @@
             <option v-for="(year, index) in years" :key="index" :value="year">{{ year }}</option>
           </select>
         </div>
+        <div class="attributes__school">
+          <span>Школа: </span>
+          <select name="school" id="school" v-model='selectSchool'>
+            <option v-for="(school, index) in schools" :key="index" :value="school">{{ school }}</option>
+          </select>
+        </div>
         <div class="attributes__text">
           <span>Найти: </span>
           <input type="text" name="subname" id="subname" placeholder="Фамилия" v-model="searchParams.searchSubname">
@@ -20,8 +26,11 @@
         </div>
       </div>
     </div>
-    <div v-for='(exam, index) in filteredExams' :key='index'>
-      <InfoSubject :exam="exam" :openAllTables="checked" />
+    <div>
+      <p v-if='!filteredExams.length' class="notFound">По данному запросу ничего не найдено...</p>
+      <div v-else v-for='(exam, index) in filteredExams' :key='index'>
+        <InfoSubject :exam="exam" :openAllTables="checked" />
+      </div>
     </div>
   </div>
 </template>
@@ -39,13 +48,15 @@ export default {
         searchSubname: '',
         searchName: ''
       },
-      selectYear: (new Date().getFullYear() - 1).toString()
+      selectYear: (new Date().getFullYear() - 1).toString(),
+      selectSchool: 'Все школы'
     }
   },
   computed: {
     ...mapGetters({
       exams: 'getAllExams',
-      years: 'getAllYears'
+      years: 'getAllYears',
+      schools: 'getAllSchools'
     }),
     checkedMessage () {
       if (this.checked) {
@@ -59,7 +70,9 @@ export default {
       this.exams.forEach(item => {
         const exam = {}
         const newParticipants = item.participants.filter(item => {
-          return item.subname.toLowerCase().includes(this.searchParams.searchSubname.toLowerCase()) && item.name.toLowerCase().includes(this.searchParams.searchName.toLowerCase())
+          return item.subname.toLowerCase().includes(this.searchParams.searchSubname.toLowerCase()) &&
+          item.name.toLowerCase().includes(this.searchParams.searchName.toLowerCase()) &&
+          (this.selectSchool === 'Все школы') ? item.schoolCode : item.schoolCode === this.selectSchool
         })
         if (newParticipants.length !== 0) {
           exam.examCode = item.examCode
@@ -75,11 +88,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllExams', 'getAllYears'])
+    ...mapActions(['getAllExams', 'getAllYears', 'getAllSchools'])
   },
   async created () {
     if (this.$route.query.year) {
       this.selectYear = this.$route.query.year
+    }
+
+    if (this.$route.query.school) {
+      this.selectSchool = this.$route.query.school === 'Все школы' ? this.$route.query.school : +this.$route.query.school
     }
 
     if (this.$route.query.subname) {
@@ -93,14 +110,18 @@ export default {
     this.$router.push({ query: { year: this.selectYear } })
 
     await this.getAllYears()
+    await this.getAllSchools()
     await this.getAllExams(this.selectYear)
   },
   watch: {
     'searchParams.searchSubname' () {
-      this.$router.push({ query: { year: this.selectYear, subname: this.searchParams.searchSubname, name: this.searchParams.searchName } })
+      this.$router.push({ query: { year: this.selectYear, school: this.selectSchool, subname: this.searchParams.searchSubname, name: this.searchParams.searchName } })
     },
     'searchParams.searchName' () {
-      this.$router.push({ query: { year: this.selectYear, subname: this.searchParams.searchSubname, name: this.searchParams.searchName } })
+      this.$router.push({ query: { year: this.selectYear, school: this.selectSchool, subname: this.searchParams.searchSubname, name: this.searchParams.searchName } })
+    },
+    selectSchool () {
+      this.$router.push({ query: { year: this.selectYear, school: this.selectSchool, subname: this.searchParams.searchSubname, name: this.searchParams.searchName } })
     },
     async selectYear () {
       this.$router.push({ query: { year: this.selectYear } })
@@ -140,12 +161,29 @@ export default {
     border: 1px solid #15816b;
     }
   }
-  &__year {
+  &__year,
+  &__school {
     & select {
     padding: 3px;
     border: 1px solid #15816b;
     }
   }
+  &__year {
+    & select {
+      width: 60px;
+    }
+  }
+  &__school {
+    & select {
+      width: 100px;
+    }
+  }
+}
+
+.notFound {
+  text-align: center;
+  font-size: 2em;
+  color: #9a9a9a;
 }
 
 @media (max-width: 768px) {

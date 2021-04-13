@@ -2,16 +2,21 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
+    schools: [],
     years: [],
     exams: [],
     uploadExams: []
   },
   getters: {
+    getAllSchools: state => state.schools,
     getAllYears: state => state.years,
     getUploadExams: state => state.uploadExams,
     getAllExams: state => state.exams
   },
   mutations: {
+    pushAllShools (state, schools) {
+      state.schools = schools
+    },
     pushAllYears (state, years) {
       state.years = years
     },
@@ -23,6 +28,17 @@ export default createStore({
     }
   },
   actions: {
+    async getAllSchools ({ dispatch, commit }) {
+      try {
+        // const response = await fetch('http://192.168.1.22:5000/api/schools')
+        const response = await fetch('http://192.168.43.161:5000/api/schools')
+        if (response.ok) {
+          commit('pushAllShools', await response.json())
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async getAllYears ({ dispatch, commit }) {
       try {
         // const response = await fetch('http://192.168.1.22:5000/api/years')
