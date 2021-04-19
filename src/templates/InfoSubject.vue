@@ -22,7 +22,7 @@
           <th class="arrows" :class="sortData.name" @click="sortHandler(exam.participants, 'name')">Имя</th>
           <th class="arrows" :class="sortData.lastname" @click="sortHandler(exam.participants, 'lastname')">Отчетсво</th>
           <th>Задания с кратким ответом</th>
-          <th>Задания с развёрнутым ответом</th>
+          <th v-if="checkDetailedTasks(exam)">Задания с развёрнутым ответом</th>
           <th>Первичный балл</th>
           <th class="arrows" :class="sortData.score" @click="sortHandler(exam.participants, 'score')">Балл</th>
         </tr>
@@ -37,7 +37,7 @@
           <td>{{ participant.name }}</td>
           <td>{{ participant.lastname }}</td>
           <td>{{ participant.shortTask.join(',') }}</td>
-          <td>{{ participant.detailedTask.join(',') }}</td>
+          <td v-if="participant.detailedTask.length">{{ participant.detailedTask.join(',') }}</td>
           <td>{{ participant.baseScore }}</td>
           <td>{{ participant.score }}</td>
         </tr>
@@ -60,7 +60,8 @@ export default {
         lastname: 'none',
         score: 'none'
       },
-      openTable: false
+      openTable: false,
+      isDetailedTasks: true
     }
   },
   computed: {
@@ -149,6 +150,13 @@ export default {
       }
       const yy = newDate.getFullYear()
       return `${dd}.${mm}.${yy}`
+    },
+    checkDetailedTasks (exam) {
+      if (exam.participants[0].detailedTask.length) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   watch: {

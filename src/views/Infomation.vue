@@ -12,7 +12,7 @@
         <div class="attributes__school">
           <span>Школа: </span>
           <select name="school" id="school" v-model='selectSchool'>
-            <option v-for="(school, index) in schools" :key="index" :value="school">{{ school }}</option>
+            <option v-for="(school, index) in schools" :key="index" :value="school">{{ createNameSchool(school) }}</option>
           </select>
         </div>
         <div class="attributes__text">
@@ -38,6 +38,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import InfoSubject from '../templates/InfoSubject.vue'
+import schoolName from '../plugin/schoolName.js'
 
 export default {
   name: 'AllInfo',
@@ -56,7 +57,8 @@ export default {
     ...mapGetters({
       exams: 'getAllExams',
       years: 'getAllYears',
-      schools: 'getAllSchools'
+      schools: 'getAllSchools',
+      error: 'getError'
     }),
     checkedMessage () {
       if (this.checked) {
@@ -72,7 +74,7 @@ export default {
         const newParticipants = item.participants.filter(item => {
           return item.subname.toLowerCase().includes(this.searchParams.searchSubname.toLowerCase()) &&
           item.name.toLowerCase().includes(this.searchParams.searchName.toLowerCase()) &&
-          (this.selectSchool === 'Все школы') ? item.schoolCode : item.schoolCode === this.selectSchool
+          ((this.selectSchool === 'Все школы') ? item.schoolCode : item.schoolCode === this.selectSchool)
         })
         if (newParticipants.length !== 0) {
           exam.examCode = item.examCode
@@ -88,7 +90,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllExams', 'getAllYears', 'getAllSchools'])
+    ...mapActions(['getAllExams', 'getAllYears', 'getAllSchools']),
+    createNameSchool (selectSchool) {
+      if (selectSchool === 'Все школы') {
+        return selectSchool
+      }
+      for (const key in schoolName) {
+        if (+key === selectSchool) {
+          return `${key} - ${schoolName[key]}`
+        }
+      }
+    }
   },
   async created () {
     if (this.$route.query.year) {
@@ -126,6 +138,9 @@ export default {
     async selectYear () {
       this.$router.push({ query: { year: this.selectYear } })
       await this.getAllExams(this.selectYear)
+    },
+    error (error) {
+      throw error
     }
   },
   components: {
@@ -144,17 +159,21 @@ export default {
 }
 
 .attributes {
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 1.4fr 1fr;
+  gap: 10px;
+  grid-template-areas:"year school school school text text checkbox";
+  align-items: center;
   margin: 10px;
   &__checkbox {
+    grid-area: checkbox;
     & input {
       margin-right: 5px;
       border: 1px solid #15816b;
     }
   }
   &__text {
-    padding: 2px;
+    grid-area: text;
     & input[type=text] {
     margin-right: 3px;
     padding: 3px;
@@ -169,13 +188,15 @@ export default {
     }
   }
   &__year {
+    grid-area: year;
     & select {
       width: 60px;
     }
   }
   &__school {
+    grid-area: school;
     & select {
-      width: 100px;
+      width: 370px;
     }
   }
 }
@@ -186,9 +207,28 @@ export default {
   color: #9a9a9a;
 }
 
-@media (max-width: 768px) {
-  .tools {
-    font-size: 1em;
+@media (max-width: 1200px) {
+  .attributes {
+    width: 700px;
+    margin: 0 auto;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 1fr .4fr;
+    grid-template-areas:
+      "school year"
+      "text checkbox";
+  }
+}
+
+@media (max-width: 711px) {
+  .attributes {
+    width: 460px;
+    margin: 0 auto;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: .7fr 1.3fr;
+    grid-template-areas:
+      "year checkbox"
+      "school school"
+      "text text";
   }
 }
 </style>

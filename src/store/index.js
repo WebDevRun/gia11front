@@ -5,13 +5,15 @@ export default createStore({
     schools: [],
     years: [],
     exams: [],
-    uploadExams: []
+    uploadExams: [],
+    error: null
   },
   getters: {
     getAllSchools: state => state.schools,
     getAllYears: state => state.years,
     getUploadExams: state => state.uploadExams,
-    getAllExams: state => state.exams
+    getAllExams: state => state.exams,
+    getError: state => state.error
   },
   mutations: {
     pushAllShools (state, schools) {
@@ -25,6 +27,9 @@ export default createStore({
     },
     pushAllExams (state, exams) {
       state.exams = exams
+    },
+    pushError (state, error) {
+      state.error = error
     }
   },
   actions: {
@@ -36,7 +41,8 @@ export default createStore({
           commit('pushAllShools', await response.json())
         }
       } catch (error) {
-        console.log(error)
+        commit('pushError', error)
+        throw error
       }
     },
     async getAllYears ({ dispatch, commit }) {
@@ -47,7 +53,8 @@ export default createStore({
           commit('pushAllYears', await response.json())
         }
       } catch (error) {
-        console.log(error)
+        commit('pushError', error)
+        throw error
       }
     },
     async sendExams ({ dispatch, commit }, data) {
@@ -61,7 +68,8 @@ export default createStore({
           commit('pushUploadExams', await response.json())
         }
       } catch (error) {
-        console.log(error)
+        commit('pushError', error)
+        throw error
       }
     },
     async getAllExams ({ dispatch, commit }, params) {
@@ -72,7 +80,8 @@ export default createStore({
           commit('pushAllExams', await response.json())
         }
       } catch (error) {
-        console.log(error)
+        commit('pushError', error)
+        throw error
       }
     }
   },
