@@ -19,9 +19,14 @@
           <div class="file-wrapper__button">Выбрать</div>
         </label>
       </div>
+      <div v-if="exams.length">
         <div v-for='(exam, index) in exams' :key='index'>
-          <InfoSubject :exam='exam'/>
+          <div v-if="exam.participants.length">
+            <InfoSubject :exam='exam'/>
+          </div>
+          <p v-else class="notFound">Не верный шаблон или нет данных...</p>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -130,5 +135,11 @@ export default {
   border: 1px solid black;
   padding: 5px 20px;
   text-align: center;
+}
+
+.notFound {
+  text-align: center;
+  font-size: 2em;
+  color: #9a9a9a;
 }
 </style>

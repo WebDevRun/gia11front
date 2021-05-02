@@ -152,7 +152,7 @@ export default {
       return `${dd}.${mm}.${yy}`
     },
     checkDetailedTasks (exam) {
-      if (exam.participants[0].detailedTask.length) {
+      if (exam.participants[0]?.detailedTask.length) {
         return true
       } else {
         return false
