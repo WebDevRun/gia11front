@@ -49,7 +49,17 @@
 <script>
 export default {
   name: 'InfoSubject',
-  props: ['exam', 'openAllTables'],
+  props: {
+    exam: {
+      type: Object,
+      required: true
+    },
+    openAllTables: {
+      type: Boolean,
+      required: true,
+      default: false
+    }
+  },
   data () {
     return {
       sortData: {
@@ -261,16 +271,16 @@ export default {
     vertical-align: middle;
   }
   &__numberOfParticipants::before {
-    background-image: url(../../src/assets/numberOfParticipants.svg);
+    background-image: url(../assets/numberOfParticipants.svg);
   }
   &__maxScore:before {
-    background-image: url(../../src/assets/maxScore.svg);
+    background-image: url(../assets/maxScore.svg);
   }
   &__averageScore:before {
-    background-image: url(../../src/assets/averageScore.svg);
+    background-image: url(../assets/averageScore.svg);
   }
   &__minScore:before {
-    background-image: url(../../src/assets/minScore.svg);
+    background-image: url(../assets/minScore.svg);
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-if='exams.length'>
+  <div v-if='exams.length'>
     <h1 class="h1">Информация ГИА 11</h1>
     <div class="tools">
       <div class="tools__attributes attributes">
@@ -37,7 +37,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import InfoSubject from '../templates/InfoSubject.vue'
+import InfoSubject from '../templates/InfoSubject'
 import schoolName from '../plugin/schoolName.js'
 
 export default {

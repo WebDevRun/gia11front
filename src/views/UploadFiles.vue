@@ -33,7 +33,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import InfoSubject from '../templates/InfoSubject.vue'
+import InfoSubject from '../templates/InfoSubject'
 
 export default {
   name: 'UploadFiles',
