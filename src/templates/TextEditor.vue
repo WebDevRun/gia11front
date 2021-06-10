@@ -1,14 +1,35 @@
 <template>
-  <div class="editor" v-if="editor">
+  <div
+    v-if="editor"
+    class="editor"
+  >
     <div class="editor__header header">
-      <div v-for='(item, index) in editorMenuItems' :key='index'>
-        <div class="header__divider" v-if="item.type === 'divider'" />
-        <button class="header__item" :class="{ 'is-active': item.isActive ? item.isActive(): null }" v-else @click="item.action" :title="item.title">
-          <img :src="require(`../assets/textEditorSvg/${item.icon}.svg`)" :alt="`${item.title}`">
+      <div
+        v-for="(item, index) in editorMenuItems"
+        :key="index"
+      >
+        <div
+          v-if="item.type === 'divider'"
+          class="header__divider"
+        />
+        <button
+          v-else
+          class="header__item"
+          :class="{ 'is-active': item.isActive ? item.isActive(): null }"
+          :title="item.title"
+          @click="item.action"
+        >
+          <img
+            :src="require(`../assets/textEditorSvg/${item.icon}.svg`)"
+            :alt="`${item.title}`"
+          >
         </button>
       </div>
     </div>
-    <EditorContent :editor='editor' class="editor__content content" />
+    <EditorContent
+      :editor="editor"
+      class="editor__content content"
+    />
   </div>
 </template>
 

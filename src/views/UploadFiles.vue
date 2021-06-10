@@ -4,25 +4,22 @@
     <div class="wrapper">
       <div class="wrapperUpload">
         <input
+          id="input-file"
           type="file"
           name="fileUpload"
-          id="input-file"
           class="wrapperUpload__input-file"
-          @change="uploadFilesHandler"
           multiple
+          @change="uploadFilesHandler"
         />
-        <label
-          for="input-file"
-          class="wrapperUpload__file-wrapper file-wrapper"
-        >
+        <label for="input-file" class="wrapperUpload__file-wrapper file-wrapper">
           <div class="file-wrapper__status">{{ message }}</div>
           <div class="file-wrapper__button">Выбрать</div>
         </label>
       </div>
       <div v-if="exams.length">
-        <div v-for='(exam, index) in exams' :key='index'>
+        <div v-for="(exam, index) in exams" :key="index">
           <div v-if="exam.participants.length">
-            <InfoSubject :exam='exam'/>
+            <InfoSubject :exam="exam" />
           </div>
           <p v-else class="notFound">Не верный шаблон или нет данных...</p>
         </div>
@@ -37,13 +34,16 @@ import InfoSubject from '../templates/InfoSubject'
 
 export default {
   name: 'UploadFiles',
-  data () {
+  components: {
+    InfoSubject,
+  },
+  data() {
     return {
-      fileSelect: []
+      fileSelect: [],
     }
   },
   computed: {
-    message () {
+    message() {
       if (this.fileSelect.length) {
         return `Файлов загружено: ${this.fileSelect.length}`
       } else {
@@ -52,25 +52,22 @@ export default {
     },
 
     ...mapGetters({
-      exams: 'getUploadExams'
-    })
+      exams: 'getUploadExams',
+    }),
   },
   methods: {
     ...mapActions(['sendExams']),
 
-    async uploadFilesHandler (e) {
+    async uploadFilesHandler(e) {
       this.fileSelect = e.target.files
       const formData = new FormData()
-      this.fileSelect.forEach(element => {
+      this.fileSelect.forEach((element) => {
         formData.append('file', element)
       })
 
       await this.sendExams(formData)
-    }
+    },
   },
-  components: {
-    InfoSubject
-  }
 }
 </script>
 

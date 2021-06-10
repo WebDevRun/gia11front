@@ -1,32 +1,94 @@
 <template>
-  <details class="detailsWrapper" ref="details" :open="openAllTables">
-    <summary class="detailsWrapper__h2 h2" @click="openTableHandler">
-      <div class="h2__info">{{ exam.examCode }} - {{ exam.examName }}</div>
-      <div class="h2__statistic statistic" :class="{open: openTable}">
-        <div class="statistic__numberOfParticipants">{{ countParticipants }}</div>
-        <div class="statistic__maxScore">{{ maxScore }}</div>
-        <div class="statistic__averageScore">{{ averageScore }}</div>
-        <div class="statistic__minScore">{{ minScore }}</div>
+  <details
+    ref="details"
+    class="detailsWrapper"
+    :open="openAllTables"
+  >
+    <summary
+      class="detailsWrapper__h2 h2"
+      @click="openTableHandler"
+    >
+      <div class="h2__info">
+        {{ exam.examCode }} - {{ exam.examName }}
+      </div>
+      <div
+        class="h2__statistic statistic"
+        :class="{open: openTable}"
+      >
+        <div class="statistic__numberOfParticipants">
+          {{ countParticipants }}
+        </div>
+        <div class="statistic__maxScore">
+          {{ maxScore }}
+        </div>
+        <div class="statistic__averageScore">
+          {{ averageScore }}
+        </div>
+        <div class="statistic__minScore">
+          {{ minScore }}
+        </div>
       </div>
     </summary>
     <div class="detailsWrapper__scroll">
       <table class="detailsWrapper__table table">
         <tr class="table__head">
-          <th class="arrows" :class="sortData.examDate" @click="sortHandler(exam.participants, 'examDate')">Дата</th>
+          <th
+            class="arrows"
+            :class="sortData.examDate"
+            @click="sortHandler(exam.participants, 'examDate')"
+          >
+            Дата
+          </th>
           <th>МСУ</th>
-          <th class="arrows" :class="sortData.schoolCode" @click="sortHandler(exam.participants, 'schoolCode')">Код школы</th>
+          <th
+            class="arrows"
+            :class="sortData.schoolCode"
+            @click="sortHandler(exam.participants, 'schoolCode')"
+          >
+            Код школы
+          </th>
           <th>Класс</th>
           <th>Код ППЭ</th>
           <th>Номер аудитории</th>
-          <th class="arrows" :class="sortData.subname" @click="sortHandler(exam.participants, 'subname')">Фамилия</th>
-          <th class="arrows" :class="sortData.name" @click="sortHandler(exam.participants, 'name')">Имя</th>
-          <th class="arrows" :class="sortData.lastname" @click="sortHandler(exam.participants, 'lastname')">Отчетсво</th>
+          <th
+            class="arrows"
+            :class="sortData.subname"
+            @click="sortHandler(exam.participants, 'subname')"
+          >
+            Фамилия
+          </th>
+          <th
+            class="arrows"
+            :class="sortData.name"
+            @click="sortHandler(exam.participants, 'name')"
+          >
+            Имя
+          </th>
+          <th
+            class="arrows"
+            :class="sortData.lastname"
+            @click="sortHandler(exam.participants, 'lastname')"
+          >
+            Отчетсво
+          </th>
           <th>Задания с кратким ответом</th>
-          <th v-if="checkDetailedTasks(exam)">Задания с развёрнутым ответом</th>
+          <th v-if="checkDetailedTasks(exam)">
+            Задания с развёрнутым ответом
+          </th>
           <th>Первичный балл</th>
-          <th class="arrows" :class="sortData.score" @click="sortHandler(exam.participants, 'score')">Балл</th>
+          <th
+            class="arrows"
+            :class="sortData.score"
+            @click="sortHandler(exam.participants, 'score')"
+          >
+            Балл
+          </th>
         </tr>
-        <tr v-for='(participant, index) in exam.participants' :key='index' class="table__content">
+        <tr
+          v-for="(participant, index) in exam.participants"
+          :key="index"
+          class="table__content"
+        >
           <td>{{ formatDate(participant.examDate) }}</td>
           <td>{{ participant.MSY }}</td>
           <td>{{ participant.schoolCode }}</td>
@@ -37,7 +99,9 @@
           <td>{{ participant.name }}</td>
           <td>{{ participant.lastname }}</td>
           <td>{{ participant.shortTask.join(',') }}</td>
-          <td v-if="participant.detailedTask.length">{{ participant.detailedTask.join(',') }}</td>
+          <td v-if="participant.detailedTask.length">
+            {{ participant.detailedTask.join(',') }}
+          </td>
           <td>{{ participant.baseScore }}</td>
           <td>{{ participant.score }}</td>
         </tr>
@@ -104,6 +168,15 @@ export default {
       return (sum / this.countParticipants).toFixed(0)
     }
   },
+  watch: {
+    openAllTables () {
+      if (this.openAllTables) {
+        this.openTable = true
+      } else {
+        this.openTable = false
+      }
+    }
+  },
   methods: {
     sortHandler (participants, sortField) {
       switch (this.sortData[sortField]) {
@@ -166,15 +239,6 @@ export default {
         return true
       } else {
         return false
-      }
-    }
-  },
-  watch: {
-    openAllTables () {
-      if (this.openAllTables) {
-        this.openTable = true
-      } else {
-        this.openTable = false
       }
     }
   }
