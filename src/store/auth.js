@@ -1,22 +1,16 @@
 export default {
   state: {
-    refreshToken: null,
     accessToken: null
   },
   getters: {
     getAccessToken: state => state.accessToken,
-    getRefreshToken: state => state.refreshToken
   },
   mutations: {
-    setTokens (state, tokens) {
-      state.refreshToken = tokens.refreshToken
-      localStorage.setItem('refreshToken', tokens.refreshToken)
-      state.accessToken = tokens.accessToken
-      localStorage.setItem('accessToken', tokens.accessToken)
+    setTokens (state, accessToken) {
+      state.accessToken = accessToken
+      localStorage.setItem('accessToken', accessToken)
     },
     deleteTokens (state) {
-      state.refreshToken = null
-      localStorage.removeItem('refreshToken')
       state.accessToken = null
       localStorage.removeItem('accessToken')
     }
@@ -26,8 +20,9 @@ export default {
       try {
         const response = await fetch('http://192.168.43.161:5000/api/login', {
           method: 'POST',
+          credentials: 'include',
           headers: {
-            'Content-Type': 'application/json; charset=utf-8'
+            'Content-Type': 'application/json; charset=utf-8',
           },
           body: JSON.stringify(user)
         })
@@ -44,6 +39,7 @@ export default {
         const refreshToken = localStorage.getItem('refreshToken')
         const response = await fetch('http://192.168.43.161:5000/api/getNewTokens', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json; charset=utf-8'
           },
@@ -60,17 +56,16 @@ export default {
     async logoutFromDB ({ dispatch, commit }) {
       try {
         const accessToken = localStorage.getItem('accessToken')
-        const refreshToken = localStorage.getItem('refreshToken')
         const response = await fetch('http://192.168.43.161:5000/api/logout', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json; charset=utf-8',
-            Authorization: accessToken
-          },
-          body: JSON.stringify({refreshToken})
+            Authorization: accessToken,
+          }
         })
 
-        if (response.status === 403) {
+        if (response.status === 401) {
           await dispatch('getNewTokens')
           await dispatch('logoutFromDB')
         }

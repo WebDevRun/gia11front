@@ -36,7 +36,7 @@ export default {
           }
         })
 
-        if (response.status === 403) {
+        if (response.status === 401) {
           await dispatch('getNewTokens')
           await dispatch('getAllSchools')
         }
@@ -59,7 +59,7 @@ export default {
           }
         })
 
-        if (response.status === 403) {
+        if (response.status === 401) {
           await dispatch('getNewTokens')
           await dispatch ('getAllYears')
         }
@@ -100,7 +100,7 @@ export default {
           }
         })
 
-        if (response.status === 403) {
+        if (response.status === 401) {
           await dispatch('getNewTokens')
           await dispatch ('getAllExams', params)
         }
