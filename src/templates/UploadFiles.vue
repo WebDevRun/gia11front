@@ -1,7 +1,7 @@
-<template>
+<template >
   <div>
     <h1 class="h1">Загрузка файлов</h1>
-    <div class="wrapper">
+    <div>
       <div class="wrapperUpload">
         <input
           id="input-file"
@@ -72,14 +72,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  width: 1320px;
-  margin: auto;
-}
-
 .wrapperUpload {
   width: 300px;
-  margin: auto;
+  margin: 0 auto;
   text-align: center;
   &__input-file {
     display: none;

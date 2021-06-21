@@ -5,6 +5,7 @@
       <input
         id="nickName"
         v-model="nickName"
+        :class="{ red: hasLoginError }"
         class="formWrapper__nickName"
         type="text"
         name="nickName"
@@ -13,6 +14,7 @@
       <input
         id="password"
         v-model="password"
+        :class="{ red: hasLoginError }"
         class="formWrapper__password"
         type="password"
         name="password"
@@ -20,6 +22,7 @@
       />
       <button class="formWrapper__button" type="submit">Войти</button>
     </form>
+    <div v-if="hasLoginError" class="errorMessage">Нет верный логин или пароль</div>
   </div>
 </template>
 
@@ -37,7 +40,11 @@ export default {
   computed: {
     ...mapGetters({
       accessToken: 'getAccessToken',
+      error: 'getError',
     }),
+    hasLoginError() {
+      return this.error?.message === 'invalid nickname or password'
+    },
   },
   methods: {
     ...mapActions(['login']),
@@ -50,7 +57,7 @@ export default {
         await this.login(user)
       }
 
-      if (this.accessToken) {
+      if (!this.error && this.accessToken) {
         this.$router.push('/')
       }
     },
@@ -64,6 +71,7 @@ export default {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
   &__nickName,
   &__password {
     margin-bottom: 15px;
@@ -80,5 +88,15 @@ export default {
     font-family: inherit;
     font-size: 1.1em;
   }
+}
+
+.red {
+  border: 2px solid red;
+}
+
+.errorMessage {
+  color: red;
+  text-align: center;
+  font-size: 1.2em;
 }
 </style>

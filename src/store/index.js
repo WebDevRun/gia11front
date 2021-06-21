@@ -13,7 +13,7 @@ export default createStore({
     pushError (state, error) {
       state.error = error
     },
-    nullError(state, error) {
+    deleteError(state) {
       state.error = null
     }
   },

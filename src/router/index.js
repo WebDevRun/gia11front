@@ -7,12 +7,7 @@ const routes = [
     meta: { layout: 'main', auth: true },
     component: () => import('../views/Infomation.vue')
   },
-  {
-    path: '/uploadfiles',
-    name: 'UploadFiles',
-    meta: { layout: 'main', auth: true },
-    component: () => import('../views/UploadFiles.vue')
-  },
+
   {
     path: '/about',
     name: 'About',
@@ -23,18 +18,34 @@ const routes = [
     path: '/controlpanel',
     name: 'ControlPanel',
     meta: { layout: 'main', auth: true },
-    component: () => import('../views/ControlPanel.vue')
+    component: () => import('../views/ControlPanel.vue'),
+    children: [
+      {
+        path: 'uploadfiles',
+        name: 'UploadFiles',
+        component: () => import('../templates/UploadFiles.vue')
+      },
+      {
+        path: 'minscore',
+        name: 'minScore',
+        component: () => import('../templates/MinScore.vue')
+      },
+    ]
   },
   {
     path: '/signin',
     name: 'SignInLayout',
     meta: { layout: 'signin' },
     component: () => import('../layouts/SignInLayout.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('../views/404.vue')
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes
 })
 

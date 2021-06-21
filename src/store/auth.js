@@ -1,3 +1,5 @@
+let isRetry = false
+
 export default {
   state: {
     accessToken: null
@@ -26,24 +28,25 @@ export default {
           },
           body: JSON.stringify(user)
         })
+
+        if (response.status === 403) {
+          commit('pushError', await response.json())
+        }
+
         if (response.ok) {
           commit('setTokens', await response.json())
+          commit('deleteError')
+          isRetry = false
         }
       } catch (error) {
         commit('pushError', error)
-        throw error
       }
     },
     async getNewTokens ({ dispatch, commit }) {
       try {
-        const refreshToken = localStorage.getItem('refreshToken')
         const response = await fetch('http://192.168.43.161:5000/api/getNewTokens', {
           method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-          },
-          body: JSON.stringify({refreshToken})
+          credentials: 'include'
         })
         if (response.ok) {
           commit('setTokens', await response.json())
@@ -65,14 +68,12 @@ export default {
           }
         })
 
-        if (response.status === 401) {
+        if (response.status === 401 && !isRetry) {
+          isRetry = true
           await dispatch('getNewTokens')
           await dispatch('logoutFromDB')
         }
-
-        if (response.ok) {
-          commit('deleteTokens')
-        }
+        commit('deleteTokens')
       } catch (error) {
         commit('pushError', error)
         throw error

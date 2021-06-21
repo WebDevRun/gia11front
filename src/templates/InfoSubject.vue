@@ -1,20 +1,8 @@
 <template>
-  <details
-    ref="details"
-    class="detailsWrapper"
-    :open="openAllTables"
-  >
-    <summary
-      class="detailsWrapper__h2 h2"
-      @click="openTableHandler"
-    >
-      <div class="h2__info">
-        {{ exam.examCode }} - {{ exam.examName }}
-      </div>
-      <div
-        class="h2__statistic statistic"
-        :class="{open: openTable}"
-      >
+  <details ref="details" class="detailsWrapper" :open="openAllTables">
+    <summary class="detailsWrapper__h2 h2" @click="openTableHandler">
+      <div class="h2__info">{{ exam.examCode }} - {{ exam.examName }}</div>
+      <div class="h2__statistic statistic" :class="{ open: openTable }">
         <div class="statistic__numberOfParticipants">
           {{ countParticipants }}
         </div>
@@ -57,11 +45,7 @@
           >
             Фамилия
           </th>
-          <th
-            class="arrows"
-            :class="sortData.name"
-            @click="sortHandler(exam.participants, 'name')"
-          >
+          <th class="arrows" :class="sortData.name" @click="sortHandler(exam.participants, 'name')">
             Имя
           </th>
           <th
@@ -72,9 +56,7 @@
             Отчетсво
           </th>
           <th>Задания с кратким ответом</th>
-          <th v-if="checkDetailedTasks(exam)">
-            Задания с развёрнутым ответом
-          </th>
+          <th v-if="checkDetailedTasks(exam)">Задания с развёрнутым ответом</th>
           <th>Первичный балл</th>
           <th
             class="arrows"
@@ -84,11 +66,7 @@
             Балл
           </th>
         </tr>
-        <tr
-          v-for="(participant, index) in exam.participants"
-          :key="index"
-          class="table__content"
-        >
+        <tr v-for="(participant, index) in exam.participants" :key="index" class="table__content">
           <td>{{ formatDate(participant.examDate) }}</td>
           <td>{{ participant.MSY }}</td>
           <td>{{ participant.schoolCode }}</td>
@@ -116,15 +94,15 @@ export default {
   props: {
     exam: {
       type: Object,
-      required: true
+      required: true,
     },
     openAllTables: {
       type: Boolean,
       required: true,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       sortData: {
         examDate: 'none',
@@ -132,80 +110,82 @@ export default {
         subname: 'none',
         name: 'none',
         lastname: 'none',
-        score: 'none'
+        score: 'none',
       },
       openTable: false,
-      isDetailedTasks: true
+      isDetailedTasks: true,
     }
   },
   computed: {
-    countParticipants () {
+    countParticipants() {
       return this.exam.participants.length
     },
-    maxScore () {
+    maxScore() {
       let max = 0
-      this.exam.participants.forEach(item => {
+      this.exam.participants.forEach((item) => {
         if (item.score > max) {
           max = item.score
         }
       })
       return max
     },
-    minScore () {
+    minScore() {
       let min = 100
-      this.exam.participants.forEach(item => {
+      this.exam.participants.forEach((item) => {
         if (item.score < min) {
           min = item.score
         }
       })
       return min
     },
-    averageScore () {
+    averageScore() {
       let sum = 0
-      this.exam.participants.forEach(item => {
+      this.exam.participants.forEach((item) => {
         sum += item.score
       })
       return (sum / this.countParticipants).toFixed(0)
-    }
+    },
   },
   watch: {
-    openAllTables () {
+    openAllTables() {
       if (this.openAllTables) {
         this.openTable = true
       } else {
         this.openTable = false
       }
-    }
+    },
   },
   methods: {
-    sortHandler (participants, sortField) {
+    sortHandler(participants, sortField) {
       switch (this.sortData[sortField]) {
         case 'none':
-        case 'descendingOrder': participants.sort((a, b) => {
-          if (a[sortField] > b[sortField]) {
-            return 1
-          }
-          if (a[sortField] < b[sortField]) {
-            return -1
-          }
-          return 0
-        })
+        case 'descendingOrder':
+          participants.sort((a, b) => {
+            if (a[sortField] > b[sortField]) {
+              return 1
+            }
+            if (a[sortField] < b[sortField]) {
+              return -1
+            }
+            return 0
+          })
           this.updateSortStatus(sortField, 'ascendingOrder')
           break
-        case 'ascendingOrder': participants.sort((a, b) => {
-          if (a[`${sortField}`] < b[`${sortField}`]) {
-            return 1
-          }
-          if (a[`${sortField}`] > b[`${sortField}`]) {
-            return -1
-          }
-          return 0
-        })
+        case 'ascendingOrder':
+          participants.sort((a, b) => {
+            if (a[`${sortField}`] < b[`${sortField}`]) {
+              return 1
+            }
+            if (a[`${sortField}`] > b[`${sortField}`]) {
+              return -1
+            }
+            return 0
+          })
           this.updateSortStatus(sortField, 'descendingOrder')
           break
       }
     },
-    updateSortStatus (sortField, sort) {
+    updateSortStatus(sortField, sort) {
       for (const key in this.sortData) {
         if (key === sortField) {
           this.sortData[key] = sort
@@ -214,14 +194,14 @@ export default {
         }
       }
     },
-    openTableHandler () {
+    openTableHandler() {
       if (!this.$refs.details.open) {
         this.openTable = true
       } else {
         this.openTable = false
       }
     },
-    formatDate (date) {
+    formatDate(date) {
       const newDate = new Date(date)
       let dd = newDate.getDate()
       if (dd < 10) {
@@ -234,14 +214,14 @@ export default {
       const yy = newDate.getFullYear()
       return `${dd}.${mm}.${yy}`
     },
-    checkDetailedTasks (exam) {
+    checkDetailedTasks(exam) {
       if (exam.participants[0]?.detailedTask.length) {
         return true
       } else {
         return false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -250,8 +230,8 @@ export default {
   background-color: #fff;
   margin: 10px 0;
   &__h2 {
-    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
-    border-radius: .25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 0.25rem;
     cursor: pointer;
     font-size: 1.2em;
   }
@@ -325,7 +305,7 @@ export default {
   &__maxScore:before,
   &__averageScore:before,
   &__minScore::before {
-    content: "";
+    content: '';
     background-repeat: no-repeat;
     height: 20px;
     width: 20px;
@@ -414,7 +394,7 @@ export default {
   .detailsWrapper {
     margin: 5px 0;
     &__h2 {
-    font-size: 1em;
+      font-size: 1em;
     }
   }
 

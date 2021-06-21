@@ -1,3 +1,5 @@
+let isRetry = false
+
 export default {
   state: {
     schools: [],
@@ -36,13 +38,21 @@ export default {
           }
         })
 
-        if (response.status === 401) {
+        if (response.status === 401 && !isRetry) {
+          isRetry = true
           await dispatch('getNewTokens')
           await dispatch('getAllSchools')
         }
 
+
+
         if (response.ok) {
           commit('pushAllShools', await response.json())
+          isRetry = false
+        }
+
+        if (isRetry) {
+          commit('deleteTokens')
         }
       } catch (error) {
         commit('pushError', error)
@@ -58,14 +68,19 @@ export default {
             Authorization: accessToken
           }
         })
-
-        if (response.status === 401) {
+        if (response.status === 401 && !isRetry) {
+          isRetry = true
           await dispatch('getNewTokens')
           await dispatch ('getAllYears')
         }
 
         if (response.ok) {
           commit('pushAllYears', await response.json())
+          isRetry = false
+        }
+
+        if (isRetry) {
+          commit('deleteTokens')
         }
       } catch (error) {
         commit('pushError', error)
@@ -82,8 +97,20 @@ export default {
           },
           body: data
         })
+
+        if (response.status === 401 && !isRetry) {
+          isRetry = true
+          await dispatch('getNewTokens')
+          await dispatch ('sendExams', data)
+        }
+
         if (response.ok) {
           commit('pushUploadExams', await response.json())
+          isRetry = false
+        }
+
+        if (isRetry) {
+          commit('deleteTokens')
         }
       } catch (error) {
         commit('pushError', error)
@@ -100,13 +127,19 @@ export default {
           }
         })
 
-        if (response.status === 401) {
+        if (response.status === 401 && !isRetry) {
+          isRetry = true
           await dispatch('getNewTokens')
           await dispatch ('getAllExams', params)
         }
 
         if (response.ok) {
           commit('pushAllExams', await response.json())
+        isRetry = false
+        }
+
+        if (isRetry) {
+          commit('deleteTokens')
         }
       } catch (error) {
         commit('pushError', error)

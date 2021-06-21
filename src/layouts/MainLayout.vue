@@ -10,13 +10,10 @@
         >
           {{ link.title }}
         </router-link>
-      </div>
-      <div class="mainNav__controlPanel">
-        <router-link :to="{ name: 'ControlPanel' }"> Администрированние </router-link>
         <button @click="logout">Выйти</button>
       </div>
     </div>
-    <router-view class="wrapper" />
+    <router-view />
   </div>
 </template>
 
@@ -29,6 +26,7 @@ export default {
       links: [
         { title: 'ГИА11', name: 'Infomation', exact: true },
         { title: 'О проекте', name: 'About' },
+        { title: 'Администрированние', name: 'ControlPanel' },
       ],
     }
   },
@@ -55,25 +53,19 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 80%;
+    width: 100%;
   }
-  &__controlPanel {
-    width: 20%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    & button {
-      border: 0;
-      padding: 5px 15px;
-      background-color: #0c493c;
-      color: #fff;
-      font-family: inherit;
-      font-size: 1em;
-      cursor: pointer;
-      border-radius: 0.25rem;
-      &:hover {
-        background-color: #0c372e;
-      }
+  & button {
+    border: 0;
+    padding: 5px 15px;
+    background-color: #0c493c;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    &:hover {
+      background-color: #0c372e;
     }
   }
   & a {
@@ -89,12 +81,6 @@ export default {
 
 table {
   border-collapse: collapse;
-}
-
-.wrapper {
-  max-width: 1320px;
-  width: 100%;
-  margin: 0 auto;
 }
 
 @media (max-width: 1200px) {

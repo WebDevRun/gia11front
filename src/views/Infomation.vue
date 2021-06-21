@@ -1,5 +1,5 @@
-<template>
-  <div v-if="exams.length">
+<template >
+  <div v-if="exams.length" class="wrapper">
     <h1 class="h1">Информация ГИА 11</h1>
     <div class="tools">
       <div class="tools__attributes attributes">
@@ -207,6 +207,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .tools {
   background-color: #fff;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
