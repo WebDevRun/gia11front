@@ -5,13 +5,15 @@ export default {
     schools: [],
     years: [],
     exams: [],
-    uploadExams: []
+    uploadExams: [],
+    minScoreStatus: {}
   },
   getters: {
     getAllSchools: state => state.schools,
     getAllYears: state => state.years,
     getUploadExams: state => state.uploadExams,
-    getAllExams: state => state.exams
+    getAllExams: state => state.exams,
+    getMinScoreStatus: state => state.minScoreStatus
   },
   mutations: {
     pushAllShools (state, schools) {
@@ -25,13 +27,16 @@ export default {
     },
     pushAllExams (state, exams) {
       state.exams = exams
+    },
+    pushMinScoreStatus (state, minScoreStatus) {
+      state.minScoreStatus = minScoreStatus
     }
   },
   actions: {
     async getAllSchools ({ dispatch, commit }) {
       try {
         const accessToken = localStorage.getItem('accessToken')
-        const response = await fetch('http://192.168.43.161:5000/api/schools', {
+        const response = await fetch('http://192.168.1.22:5000/api/schools', {
           method: 'GET',
           headers: {
             Authorization: accessToken
@@ -56,13 +61,12 @@ export default {
         }
       } catch (error) {
         commit('pushError', error)
-        throw error
       }
     },
     async getAllYears ({ dispatch, commit }) {
       try {
         const accessToken = localStorage.getItem('accessToken')
-        const response = await fetch('http://192.168.43.161:5000/api/years', {
+        const response = await fetch('http://192.168.1.22:5000/api/years', {
           method: 'GET',
           headers: {
             Authorization: accessToken
@@ -84,13 +88,12 @@ export default {
         }
       } catch (error) {
         commit('pushError', error)
-        throw error
       }
     },
     async sendExams ({ dispatch, commit }, data) {
       try {
         const accessToken = localStorage.getItem('accessToken')
-        const response = await fetch('http://192.168.43.161:5000/api/exams', {
+        const response = await fetch('http://192.168.1.22:5000/api/exams', {
           method: 'POST',
           headers: {
             Authorization: accessToken
@@ -114,13 +117,12 @@ export default {
         }
       } catch (error) {
         commit('pushError', error)
-        throw error
       }
     },
     async getAllExams ({ dispatch, commit }, params) {
       try {
         const accessToken = localStorage.getItem('accessToken')
-        const response = await fetch(`http://192.168.43.161:5000/api/exams?year=${params}`, {
+        const response = await fetch(`http://192.168.1.22:5000/api/exams?year=${params}`, {
           method: 'GET',
           headers: {
             Authorization: accessToken
@@ -143,7 +145,36 @@ export default {
         }
       } catch (error) {
         commit('pushError', error)
-        throw error
+      }
+    },
+    async addMinScore ({ dispatch, commit }, minScore) {
+      try {
+        const accessToken = localStorage.getItem('accessToken')
+        const response = await fetch('http://192.168.1.22:5000/api/addminscore', {
+          method: "POST",
+          headers: {
+            Authorization: accessToken,
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+          body: JSON.stringify(minScore)
+        })
+
+        if (response.status === 401 && !isRetry) {
+          isRetry = true
+          await dispatch('getNewTokens')
+          await dispatch ('addMinScore', minScore)
+        }
+
+        if (response.ok) {
+          commit('pushMinScoreStatus', await response.json())
+          isRetry = false
+        }
+
+        if (isRetry) {
+          commit('deleteTokens')
+        }
+      } catch (error) {
+        commit('pushError', error)
       }
     }
   }

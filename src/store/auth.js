@@ -20,7 +20,7 @@ export default {
   actions: {
     async login ({ dispatch, commit }, user) {
       try {
-        const response = await fetch('http://192.168.43.161:5000/api/login', {
+        const response = await fetch('http://192.168.1.22:5000/api/login', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -44,7 +44,7 @@ export default {
     },
     async getNewTokens ({ dispatch, commit }) {
       try {
-        const response = await fetch('http://192.168.43.161:5000/api/getNewTokens', {
+        const response = await fetch('http://192.168.1.22:5000/api/getNewTokens', {
           method: 'POST',
           credentials: 'include'
         })
@@ -53,13 +53,12 @@ export default {
         }
       } catch (error) {
         commit('pushError', error)
-        throw error
       }
     },
     async logoutFromDB ({ dispatch, commit }) {
       try {
         const accessToken = localStorage.getItem('accessToken')
-        const response = await fetch('http://192.168.43.161:5000/api/logout', {
+        const response = await fetch('http://192.168.1.22:5000/api/logout', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -76,7 +75,6 @@ export default {
         commit('deleteTokens')
       } catch (error) {
         commit('pushError', error)
-        throw error
       }
     }
   }

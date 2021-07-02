@@ -4,7 +4,7 @@
     <form class="formWrapper" @submit.prevent="submitHandler">
       <input
         id="nickName"
-        v-model="nickName"
+        v-model.trim="nickName"
         :class="{ red: hasLoginError }"
         class="formWrapper__nickName"
         type="text"
@@ -13,7 +13,7 @@
       />
       <input
         id="password"
-        v-model="password"
+        v-model.trim="password"
         :class="{ red: hasLoginError }"
         class="formWrapper__password"
         type="password"
@@ -22,47 +22,49 @@
       />
       <button class="formWrapper__button" type="submit">Войти</button>
     </form>
-    <div v-if="hasLoginError" class="errorMessage">Нет верный логин или пароль</div>
+    <div v-if="hasLoginError" class="errorMessage">
+      Нет верный логин или пароль
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'SingInPanel',
+  name: "SingInPanel",
   data() {
     return {
-      nickName: '',
-      password: '',
-    }
+      nickName: "",
+      password: "",
+    };
   },
   computed: {
     ...mapGetters({
-      accessToken: 'getAccessToken',
-      error: 'getError',
+      accessToken: "getAccessToken",
+      error: "getError",
     }),
     hasLoginError() {
-      return this.error?.message === 'invalid nickname or password'
+      return this.error?.message === "invalid nickname or password";
     },
   },
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(["login"]),
     async submitHandler() {
-      if (this.nickName.trim() && this.password.trim()) {
+      if (this.nickName && this.password) {
         const user = {
           nickName: this.nickName,
           password: this.password,
-        }
-        await this.login(user)
+        };
+        await this.login(user);
       }
 
       if (!this.error && this.accessToken) {
-        this.$router.push('/')
+        this.$router.push("/");
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

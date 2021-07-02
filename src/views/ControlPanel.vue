@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       links: [
-        { title: 'Загрузить данные', name: 'UploadFiles' },
+        { title: 'Загрузить файлы', name: 'uploadFiles' },
         { title: 'Минимальные баллы', name: 'minScore' },
       ],
     }

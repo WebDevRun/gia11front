@@ -11,7 +11,10 @@
           multiple
           @change="uploadFilesHandler"
         />
-        <label for="input-file" class="wrapperUpload__file-wrapper file-wrapper">
+        <label
+          for="input-file"
+          class="wrapperUpload__file-wrapper file-wrapper"
+        >
           <div class="file-wrapper__status">{{ message }}</div>
           <div class="file-wrapper__button">Выбрать</div>
         </label>
@@ -29,46 +32,46 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import InfoSubject from '../templates/InfoSubject'
+import { mapGetters, mapActions } from "vuex";
+import InfoSubject from "../templates/InfoSubject";
 
 export default {
-  name: 'UploadFiles',
+  name: "UploadFiles",
   components: {
     InfoSubject,
   },
   data() {
     return {
       fileSelect: [],
-    }
+    };
   },
   computed: {
     message() {
       if (this.fileSelect.length) {
-        return `Файлов загружено: ${this.fileSelect.length}`
+        return `Файлов загружено: ${this.fileSelect.length}`;
       } else {
-        return 'Выберите файл(ы)'
+        return "Выберите файл(ы)";
       }
     },
 
     ...mapGetters({
-      exams: 'getUploadExams',
+      exams: "getUploadExams",
     }),
   },
   methods: {
-    ...mapActions(['sendExams']),
+    ...mapActions(["sendExams"]),
 
     async uploadFilesHandler(e) {
-      this.fileSelect = e.target.files
-      const formData = new FormData()
+      this.fileSelect = e.target.files;
+      const formData = new FormData();
       this.fileSelect.forEach((element) => {
-        formData.append('file', element)
-      })
+        formData.append("file", element);
+      });
 
-      await this.sendExams(formData)
+      await this.sendExams(formData);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,11 +107,11 @@ export default {
   }
   &__button {
     width: 100px;
-    background: #1bbc9b;
+    background: #15816b;
     color: #eee;
     font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 0 3px 3px 0;
+    border-radius: 3px;
+    font-family: inherit;
     cursor: pointer;
   }
 }

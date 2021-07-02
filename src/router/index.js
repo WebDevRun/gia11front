@@ -22,7 +22,7 @@ const routes = [
     children: [
       {
         path: 'uploadfiles',
-        name: 'UploadFiles',
+        name: 'uploadFiles',
         component: () => import('../templates/UploadFiles.vue')
       },
       {
